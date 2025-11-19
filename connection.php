@@ -19,8 +19,10 @@ function getConnection(): mysqli
     //leemos datos del ini file en un array asociativo
     $settings = readIniFile();
 
+
     //Creamos cadena de conexión concatenando
     $host = $settings['database']['host'];
+    //Obtenemos la bd
     $db = $settings['database']['schema'];
     $user = $settings['database']['username'];
     $pass = $settings['database']['password'];
