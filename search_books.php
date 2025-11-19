@@ -65,15 +65,21 @@ if (isset($_GET["busqueda"])) {
                 echo "<p>No se han encontrado resultados</p>";
             }
         } catch (Exception $e) {
-            echo "<p>Ha ocurrido una excepción: " . $e->getMessage() . "</p>";
+            error_log("Ha ocurrido una una excepción: " . $e->getMessage());
+            echo "<p>Ha ocurrido un error inesperado: </p>";
+        } finally {
+            //Cerramos los recursos
+            //Open non-persistent MySQL connections and result sets are automatically closed when their objects are destroyed. Explicitly closing open connections and freeing result sets is optional.
+            if (isset($con)) {
+                $con->close();
+            }
+            if (isset($stmt)) {
+                $stmt->close();
+            }
+            if (isset($resultado)) {
+                $resultado->free();
+            }
         }
-        //Cerramos los recursos
-        //Open non-persistent MySQL connections and result sets are automatically closed when their objects are destroyed. Explicitly closing open connections and freeing result sets is optional.
-        $con = null;
-        if ($stmt != null)
-            $stmt->close();
-        if ($resultado != null)
-            $resultado->free();
     } else {
         echo "<p> Introduzca una cadena no vacía </p>";
     }
